@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<!--
+	Gallery page for Emmanuel Castro Flores' portfolio.
+	Uses the same Strata (HTML5 UP) assets as the rest of the site for look and feel,
+	but a small custom lightbox (not jquery.poptrox) so the image and its full story
+	can both be shown cleanly when you click a photo.
+-->
+<html>
+	<head>
+		<title>¿A dónde pertenezco? — Emmanuel Castro Flores</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			body.gallery-page {
+				background: #1c1c1c;
+				color: rgba(255, 255, 255, 0.75);
+			}
+			.gallery-wrapper {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 3em 2em 2em 2em;
+			}
+			#gallery-grid {
+				display: grid;
+				grid-template-columns: repeat(5, 1fr);
+				gap: 1.5em;
+			}
+			@media (max-width: 980px) {
+				#gallery-grid { grid-template-columns: repeat(3, 1fr); }
+			}
+			@media (max-width: 736px) {
+				#gallery-grid { grid-template-columns: repeat(2, 1fr); }
+			}
+			@media (max-width: 480px) {
+				#gallery-grid { grid-template-columns: repeat(1, 1fr); }
+			}
+			.gallery-entry .thumb {
+				display: block;
+				margin: 0 0 0.5em 0;
+				cursor: pointer;
+				border: none;
+				background: none;
+				padding: 0;
+				width: 100%;
+			}
+			.gallery-entry .thumb img {
+				width: 100%;
+				display: block;
+				aspect-ratio: 1 / 1;
+				object-fit: cover;
+				border-radius: 0.2em;
+				transition: opacity 0.2s ease-in-out;
+			}
+			.gallery-entry .thumb:hover img {
+				opacity: 0.8;
+			}
+			.gallery-entry h3 {
+				font-size: 0.9em;
+				text-align: center;
+				margin: 0;
+			}
+			.gallery-entry .placeholder-photo {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				aspect-ratio: 1 / 1;
+				background: repeating-linear-gradient(45deg, #2a2a2a, #2a2a2a 12px, #242424 12px, #242424 24px);
+				border: 1px dashed rgba(255, 255, 255, 0.25);
+				color: rgba(255, 255, 255, 0.4);
+				font-size: 0.75em;
+				text-align: center;
+				padding: 1em;
+			}
+
+			/* Hidden source of truth for each entry's story — read by JS, never shown directly */
+			.gallery-story {
+				display: none;
+			}
+
+			/* Custom lightbox */
+			#lightbox {
+				display: none;
+				position: fixed;
+				top: 0; left: 0; right: 0; bottom: 0;
+				background: rgba(0, 0, 0, 0.92);
+				z-index: 9999;
+				padding: 3em 1.5em;
+				box-sizing: border-box;
+				overflow-y: auto;
+			}
+			#lightbox.is-visible {
+				display: flex;
+				align-items: flex-start;
+				justify-content: center;
+			}
+			#lightbox-box {
+				max-width: 700px;
+				width: 100%;
+				margin: auto;
+			}
+			#lightbox-box img {
+				display: block;
+				width: 100%;
+				max-height: 60vh;
+				object-fit: contain;
+				background: #000;
+				border-radius: 0.2em;
+			}
+			#lightbox-box h3 {
+				margin: 1em 0 0.5em 0;
+				color: #fff;
+			}
+			#lightbox-story p {
+				margin: 0 0 0.75em 0;
+				font-size: 0.95em;
+				line-height: 1.6em;
+				color: rgba(255, 255, 255, 0.8);
+			}
+			#lightbox-close {
+				position: fixed;
+				top: 1.2em;
+				right: 1.5em;
+				width: 2.2em;
+				height: 2.2em;
+				line-height: 2.2em;
+				text-align: center;
+				border-radius: 50%;
+				background: rgba(255, 255, 255, 0.1);
+				color: #fff;
+				cursor: pointer;
+				font-size: 1.2em;
+				z-index: 10000;
+			}
+			#lightbox-close:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+
+			.gallery-footer {
+				text-align: center;
+				padding: 2em 0;
+				border-top: solid 1px rgba(255, 255, 255, 0.1);
+				margin-top: 2em;
+			}
+			.gallery-footer .icons {
+				margin: 0 0 1em 0;
+				padding: 0;
+				list-style: none;
+			}
+			.gallery-footer .icons li {
+				display: inline-block;
+				margin: 0 0.5em;
+			}
+			.gallery-footer .icons a {
+				color: rgba(255, 255, 255, 0.5);
+				text-decoration: none;
+			}
+			.gallery-footer .icons a:hover {
+				color: #ffffff;
+			}
+			.gallery-footer p {
+				font-size: 0.8em;
+				color: rgba(255, 255, 255, 0.4);
+				margin: 0.3em 0;
+			}
+			.gallery-footer a.back-link {
+				color: rgba(255, 255, 255, 0.6);
+			}
+		</style>
+	</head>
+	<body class="gallery-page">
+
+		<div class="gallery-wrapper">
+
+			<div id="gallery-grid">
+
+				<!-- Entry: Rústico -->
+				<article class="gallery-entry">
+					<button type="button" class="thumb" data-img="images/galeria/rustico.jpg" data-title="Rústico">
+						<img src="images/galeria/rustico.jpg" alt="Rústico" />
+					</button>
+					<h3>Rústico</h3>
+					<div class="gallery-story">
+						<p>A la vuelta de mi casa vive mi tía. Durante mi infancia y parte de mi adolescencia cada ocho días íbamos a casa de mi abuelita, mamá de mi papá. Ahí vivían ella y mi tía. Vendían tlacoyos y tortillas de trigo que repartían a todo el pueblo.</p>
+						<p>Llegábamos y todos tenían un rol. Se ponía el té. Se compraba pan. Se freían los tlacoyos. Se hacía la salsa. Se ponía la mesa.</p>
+						<p>Cocina - Comedor - Espacio de juegos. Un lugar que cada ocho días era el mismo, pero diferente.</p>
+						<p>Mi tía ya no hace tlacoyos.</p>
+					</div>
+				</article>
+
+				<!--
+					Para agregar una entrada nueva, copia el bloque <article class="gallery-entry">...</article>
+					de arriba: cambia el src/data-img/data-title de la imagen, el <h3> (título) y los párrafos
+					dentro de .gallery-story (el texto que aparece al picarle a la foto).
+				-->
+
+			</div>
+
+			<div class="gallery-footer">
+				<ul class="icons">
+					<li><a href="https://www.linkedin.com/in/emmanuel-castro-flores-29677733" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:emmanuel.cf505@gmail.com" class="icon solid fa-envelope"><span class="label">Mail</span></a></li>
+				</ul>
+				<p>&copy; Emmanuel Castro Flores</p>
+				<p><a href="index.html" class="back-link">&larr; Volver al portafolio</a></p>
+			</div>
+
+		</div>
+
+		<!-- Lightbox -->
+		<div id="lightbox">
+			<span id="lightbox-close" aria-label="Cerrar">&#215;</span>
+			<div id="lightbox-box">
+				<img id="lightbox-img" src="" alt="" />
+				<h3 id="lightbox-title"></h3>
+				<div id="lightbox-story"></div>
+			</div>
+		</div>
+
+		<script>
+			(function() {
+				var lightbox = document.getElementById('lightbox');
+				var lightboxImg = document.getElementById('lightbox-img');
+				var lightboxTitle = document.getElementById('lightbox-title');
+				var lightboxStory = document.getElementById('lightbox-story');
+				var closeBtn = document.getElementById('lightbox-close');
+
+				function openLightbox(thumbButton) {
+					var entry = thumbButton.closest('.gallery-entry');
+					var story = entry.querySelector('.gallery-story');
+
+					lightboxImg.src = thumbButton.getAttribute('data-img');
+					lightboxImg.alt = thumbButton.getAttribute('data-title') || '';
+					lightboxTitle.textContent = thumbButton.getAttribute('data-title') || '';
+					lightboxStory.innerHTML = story ? story.innerHTML : '';
+
+					lightbox.classList.add('is-visible');
+					lightbox.scrollTop = 0;
+				}
+
+				function closeLightbox() {
+					lightbox.classList.remove('is-visible');
+					lightboxImg.src = '';
+				}
+
+				document.querySelectorAll('.gallery-entry .thumb').forEach(function(btn) {
+					btn.addEventListener('click', function() {
+						openLightbox(btn);
+					});
+				});
+
+				closeBtn.addEventListener('click', closeLightbox);
+
+				lightbox.addEventListener('click', function(e) {
+					if (e.target === lightbox) closeLightbox();
+				});
+
+				document.addEventListener('keydown', function(e) {
+					if (e.key === 'Escape' && lightbox.classList.contains('is-visible')) closeLightbox();
+				});
+			})();
+		</script>
+
+	</body>
+</html>
